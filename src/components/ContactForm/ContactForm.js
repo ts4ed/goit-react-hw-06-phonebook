@@ -6,7 +6,7 @@ import {
   getContacts,
   getName,
   getNumber,
-  setWords,
+  setWord,
   setNumber,
 } from 'redux/contactsSlice';
 
@@ -44,7 +44,7 @@ export default function ContactForm() {
             pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
             title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
             required
-            onChange={e => dispatch(setWords(e.target.value))}
+            onChange={e => dispatch(setWord(e.target.value))}
             value={name}
           />
         </label>
