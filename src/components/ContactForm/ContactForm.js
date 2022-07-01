@@ -29,8 +29,11 @@ export default function ContactForm() {
             number: number,
           })
         );
-    getName = '';
-    getNumber = '';
+
+    (function reset() {
+      dispatch(setNumber(''));
+      dispatch(setWord(''));
+    })();
   };
 
   return (
