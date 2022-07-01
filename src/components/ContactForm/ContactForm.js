@@ -29,8 +29,8 @@ export default function ContactForm() {
             number: number,
           })
         );
-    e.target.name.value = '';
-    e.target.number.value = '';
+    getName = '';
+    getNumber = '';
   };
 
   return (
