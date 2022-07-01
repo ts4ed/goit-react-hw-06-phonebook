@@ -1,24 +1,22 @@
-import PropTypes from 'prop-types';
 import s from './Phonebook.module.css';
 import PhonebookItem from 'components/PhonebookItem/PhonebookItem';
+import { useSelector } from 'react-redux';
+import { getContacts, getFilter } from 'redux/contactsSlice';
 
-export default function Phonebook({ contacts, onDeleteContact }) {
+export default function Phonebook() {
+  const contacts = useSelector(getContacts);
+  const filter = useSelector(getFilter);
+
+  const contactsFiltered = contacts.filter(contact =>
+    contact.name.toLowerCase().includes(filter.toLowerCase())
+  );
   return (
     <ul className={s.list}>
-      {contacts.map(({ id, name, number }) => (
+      {contactsFiltered.map(({ id, name, number }) => (
         <li className={s.item} key={id}>
-          <PhonebookItem
-            name={name}
-            number={number}
-            onDeleteContact={() => onDeleteContact(id)}
-          />
+          <PhonebookItem name={name} number={number} id={id} />
         </li>
       ))}
     </ul>
   );
 }
-
-Phonebook.propTypes = {
-  contacts: PropTypes.array,
-  onDeleteContact: PropTypes.func.isRequired,
-};

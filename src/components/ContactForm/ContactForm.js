@@ -1,12 +1,15 @@
-// import { useState } from 'react';
 import s from './ContactForm.module.css';
 import { nanoid } from 'nanoid';
-import PropTypes from 'prop-types';
+import { useSelector, useDispatch } from 'react-redux';
+import { addContacts, getContacts } from 'redux/contactsSlice';
 import useLocalStorage from 'hooks/useLocalStorage';
 
-export default function ContactForm({ onSubmitData }) {
+export default function ContactForm() {
   const [name, setName] = useLocalStorage('name', '');
   const [number, setNumber] = useLocalStorage('number', '');
+
+  const contacts = useSelector(getContacts);
+  const dispatch = useDispatch();
 
   const handleChange = e => {
     const { name, value } = e.target;
@@ -24,12 +27,15 @@ export default function ContactForm({ onSubmitData }) {
   const handleSubmit = e => {
     e.preventDefault();
 
-    const contact = {
-      id: nanoid(),
-      name,
-      number,
-    };
-    onSubmitData(contact);
+    contacts.some(contact => contact.name === name)
+      ? alert(`${name} is already in contacts`)
+      : dispatch(
+          addContacts({
+            id: nanoid(),
+            name: name,
+            number: number,
+          })
+        );
     reset();
   };
 
@@ -72,7 +78,3 @@ export default function ContactForm({ onSubmitData }) {
     </div>
   );
 }
-
-ContactForm.propTypes = {
-  onSubmitData: PropTypes.func.isRequired,
-};
