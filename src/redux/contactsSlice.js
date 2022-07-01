@@ -5,6 +5,8 @@ export const contactsSlice = createSlice({
   initialState: {
     items: [],
     filter: '',
+    word: '',
+    number: '',
   },
   reducers: {
     setFilter(state, action) {
@@ -18,8 +20,17 @@ export const contactsSlice = createSlice({
         contact => contact.id !== action.payload
       );
     },
+    setWords(state, action) {
+      state.word = action.payload;
+    },
+    setNumber(state, action) {
+      state.number = action.payload;
+    },
   },
 });
 export const getContacts = state => state.contacts.items;
 export const getFilter = state => state.contacts.filter;
-export const { setFilter, addContacts, deleteContacts } = contactsSlice.actions;
+export const getName = state => state.contacts.word;
+export const getNumber = state => state.contacts.number;
+export const { setFilter, addContacts, deleteContacts, setWords, setNumber } =
+  contactsSlice.actions;

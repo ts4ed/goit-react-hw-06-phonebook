@@ -1,29 +1,22 @@
 import s from './ContactForm.module.css';
 import { nanoid } from 'nanoid';
 import { useSelector, useDispatch } from 'react-redux';
-import { addContacts, getContacts } from 'redux/contactsSlice';
-import useLocalStorage from 'hooks/useLocalStorage';
+import {
+  addContacts,
+  getContacts,
+  getName,
+  getNumber,
+  setWords,
+  setNumber,
+} from 'redux/contactsSlice';
 
 export default function ContactForm() {
-  const [name, setName] = useLocalStorage('name', '');
-  const [number, setNumber] = useLocalStorage('number', '');
+  const name = useSelector(getName);
+  const number = useSelector(getNumber);
 
   const contacts = useSelector(getContacts);
   const dispatch = useDispatch();
 
-  const handleChange = e => {
-    const { name, value } = e.target;
-    switch (name) {
-      case 'name':
-        setName(value);
-        break;
-      case 'number':
-        setNumber(value);
-        break;
-      default:
-        return;
-    }
-  };
   const handleSubmit = e => {
     e.preventDefault();
 
@@ -36,13 +29,10 @@ export default function ContactForm() {
             number: number,
           })
         );
-    reset();
+    e.target.name.value = '';
+    e.target.number.value = '';
   };
 
-  const reset = () => {
-    setName('');
-    setNumber('');
-  };
   return (
     <div className={s.container}>
       <form type="submit" onSubmit={handleSubmit} className={s.form}>
@@ -54,7 +44,7 @@ export default function ContactForm() {
             pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
             title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
             required
-            onChange={handleChange}
+            onChange={e => dispatch(setWords(e.target.value))}
             value={name}
           />
         </label>
@@ -66,7 +56,7 @@ export default function ContactForm() {
             pattern="(\+?( |-|\.)?\d{1,2}( |-|\.)?)?(\(?\d{3}\)?|\d{3})( |-|\.)?(\d{3}( |-|\.)?\d{4})"
             title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
             required
-            onChange={handleChange}
+            onChange={e => dispatch(setNumber(e.target.value))}
             value={number}
           />
         </label>
