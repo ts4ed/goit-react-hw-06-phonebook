@@ -30,10 +30,8 @@ export default function ContactForm() {
           })
         );
 
-    (function reset() {
-      dispatch(setNumber(''));
-      dispatch(setWord(''));
-    })();
+    dispatch(setNumber(''));
+    dispatch(setWord(''));
   };
 
   return (
