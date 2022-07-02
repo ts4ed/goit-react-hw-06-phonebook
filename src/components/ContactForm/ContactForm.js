@@ -1,18 +1,12 @@
 import s from './ContactForm.module.css';
 import { nanoid } from 'nanoid';
 import { useSelector, useDispatch } from 'react-redux';
-import {
-  addContacts,
-  getContacts,
-  getName,
-  getNumber,
-  setWord,
-  setNumber,
-} from 'redux/contactsSlice';
+import { addContacts, getContacts } from 'redux/contactsSlice';
+import useLocalStorage from 'hooks/useLocalStorage';
 
 export default function ContactForm() {
-  const name = useSelector(getName);
-  const number = useSelector(getNumber);
+  const [name, setName] = useLocalStorage('name', '');
+  const [number, setNumber] = useLocalStorage('number', '');
 
   const contacts = useSelector(getContacts);
   const dispatch = useDispatch();
@@ -29,9 +23,11 @@ export default function ContactForm() {
             number: number,
           })
         );
-
-    dispatch(setNumber(''));
-    dispatch(setWord(''));
+    reset();
+  };
+  const reset = () => {
+    setName('');
+    setNumber('');
   };
 
   return (
@@ -45,7 +41,7 @@ export default function ContactForm() {
             pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
             title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
             required
-            onChange={e => dispatch(setWord(e.target.value))}
+            onChange={e => setName(e.target.value)}
             value={name}
           />
         </label>
@@ -57,7 +53,7 @@ export default function ContactForm() {
             pattern="(\+?( |-|\.)?\d{1,2}( |-|\.)?)?(\(?\d{3}\)?|\d{3})( |-|\.)?(\d{3}( |-|\.)?\d{4})"
             title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
             required
-            onChange={e => dispatch(setNumber(e.target.value))}
+            onChange={e => setNumber(e.target.value)}
             value={number}
           />
         </label>
